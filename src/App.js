@@ -18,7 +18,6 @@ const  App = () => {
         const userRef = await createUserProfileDocument(userAuth);
 
         userRef.onSnapshot((snapShot)=>{
-          console.log(snapShot)
           setUser({
             id: snapShot.id,
             ...snapShot.data()
@@ -30,7 +29,6 @@ const  App = () => {
     })
   }
   useEffect(()=>{
-    console.log("called")
    userStateChange()
   },[])
 

@@ -36,7 +36,6 @@ const SignUp = () => {
 
   const handleChange = (e) =>{
       const {name, value} = e.target
-      console.log(name, "value:", value)
       setUserData(
         {
           ...userData,
