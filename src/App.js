@@ -6,18 +6,33 @@ import { Switch, Route } from 'react-router-dom'
 import Header from './components/header/header.js'
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.js'
 
-import { auth } from './firebase/firebase-utils'
+import { auth, createUserProfileDocument } from './firebase/firebase-utils'
 
 const  App = () => {
 
   const [user, setUser] = useState(null)
 
-  useEffect(()=>{
-    auth.onAuthStateChanged(user =>{
-      setUser(user)
-      console.log(user)
+  const userStateChange = () =>{
+    auth.onAuthStateChanged(async userAuth => {
+      if(userAuth){
+        const userRef = await createUserProfileDocument(userAuth);
+
+        userRef.onSnapshot((snapShot)=>{
+          console.log(snapShot)
+          setUser({
+            id: snapShot.id,
+            ...snapShot.data()
+          })
+        })
+      }else{
+        setUser(userAuth)
+      }
     })
-  },[user])
+  }
+  useEffect(()=>{
+    console.log("called")
+   userStateChange()
+  },[])
 
   return (  
     <div>
